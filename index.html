@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="600px" height="300px" style="border: 2px solid red"></canvas>
+</body>
+<script>
+    class Rect{
+        constructor(x, y, width, height, color) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.color = color;
+            this.status = true;
+            this.status_1 = true;
+            this.canvas = document.getElementById("myCanvas");
+            this.ctx = this.canvas.getContext("2d");
+        }
+
+        Draw(){
+            this.ctx.fillStyle = this.color;
+            this.ctx.fillRect(this.x, this.y, this.width, this.height)
+        }
+        Move(){
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            if(this.status && this.status_1){
+                this.y += 10;
+               this.x = 10
+            }else if(!this.status && this.status_1){
+                this.y = this.canvas.height - this.height - 10;
+                this.x += 10;
+            }else if(!this.status && !this.status_1 ){
+                this.y -= 10;
+                this.x = this.canvas.width - this.width - 10;
+            }else if(this.status && !this.status_1){
+                this.y = 10;
+                this.x -= 10;
+            }
+
+
+
+            if((this.y + this.height) > this.canvas.height || (this.y + this.height) == this.canvas.height){
+                return this.status = false;
+            }
+        
+            if((this.x + this.width) > this.canvas.width || (this.x + this.width) == this.canvas.width){
+                return(
+                    this.status = false,
+                    this.status_1 = false
+                )
+            }
+
+            if(this.y < 0 || this.y == 0){
+                return(
+                    this.status = true,
+                    this.status_1 = false
+                )
+            }
+            
+            if(this.x < 0 || this.x == 0){
+                return(
+                    this.status = true,
+                    this.status_1 = true
+                )
+            }
+            this.Draw();
+        }
+    }
+
+    let rect = new Rect(10, 10, 50, 50, 'blue');
+    setInterval(() => {
+        rect.Move();
+    }, 50);
+</script>
+</html>
